@@ -1,31 +1,44 @@
 import java.util.*;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Collections;
+import java.util.Arrays;
 
-public class Foursum18{
-
-    public static void main(String[] main){
-        int[] nums={1000000000,1000000000,1000000000,1000000000};
-        System.out.println(fourSum(nums,-294967296));
+public class FourSum18 {
+    public static void main(String[] args){
+        int[] p={1,0,-1,0,-2,2};
+        System.out.println(fourSum(p,0));
     }
+
     public static List<List<Integer>> fourSum(int[] nums, int target) {
         Arrays.sort(nums);
         Set<List<Integer>> res=new HashSet<>();
-        for(int i=0;i<nums.length;i++){
-            for(int j=i+1;j<nums.length;j++){
-                int k=j+1;int l=nums.length-1;
-                while(k<l){
-                    long sum=nums[i]+nums[k];
-                    sum+=nums[j];
-                    sum+=nums[l];
-                    if(sum==target){
-                        res.add(List.of(nums[i],nums[j],nums[k],nums[l]));
-                        k++;l--;
-                        while(k<l && nums[k]==nums[k-1]) k++;
-                        while(k<l && nums[l]==nums[l+1]) l--;
-                    }else if(sum>target){
-                        l--;
-                    }else{
-                        k++;
+        for(int i=0;i<nums.length-3;i++){
+            if(i>0 && nums[i]==nums[i-1]){
+                continue;
+            }
+            int first=i+1;int mid=first+1;int end=nums.length-1;
+            while(first<end-2 && mid<end){
+                // mid=first+1;
+                if((nums[i]+nums[first]+nums[end]+nums[mid])==target){
+                    res.add(new ArrayList<>(Arrays.asList(nums[i],nums[first],nums[mid],nums[end])));
+                    mid++;end--;
+                    while(mid<end && nums[mid] == nums[mid-1]){
+                        mid++;
                     }
+                    while(mid<end && nums[end]==nums[end+1]){
+                        end--;
+                    }
+                }else if((nums[i]+nums[first]+nums[end]+nums[mid])<0){
+                    mid++;
+                    if(mid==end){
+                        first++;
+                        mid=first+1;
+                    }
+                }else{
+                    end--;
                 }
             }
         }
